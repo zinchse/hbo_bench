@@ -1,0 +1,5 @@
+[run]
+omit = 
+    process_raw_data.py
+    utils.py
+
