@@ -2,6 +2,8 @@ annotated-types==0.7.0
 appnope==0.1.4
 astroid==3.2.4
 asttokens==2.4.1
+black==24.8.0
+click==8.1.7
 comm==0.2.2
 coverage==7.6.1
 debugpy==1.8.5
@@ -29,6 +31,7 @@ networkx==3.3
 numpy==2.0.1
 packaging==24.1
 parso==0.8.4
+pathspec==0.12.1
 pexpect==4.9.0
 platformdirs==4.2.2
 pluggy==1.5.0
