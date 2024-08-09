@@ -8,6 +8,7 @@ def test_vertices_and_edges(tpch_oracle: "Oracle"):
     plan = tpch_oracle.get_explain_plan(OracleRequest(query_name="q01", hintset=0, dop=1))
     (vertices, edges) = extract_vertices_and_edges(plan)
     sort_index = ALL_OPERATIONS.index("Sort")
+    assert vertices.shape[1] == len(ALL_OPERATIONS) + 2
     assert torch.all(vertices[0][0:sort_index] == 0) and torch.all(vertices[0][sort_index + 1 : -2] == 0)
     assert vertices[0][sort_index] == 1.0
     assert vertices[0][-1] == 1.0
