@@ -38,7 +38,7 @@ jobs:
 
     - name: linting
       run: |
-        pylint **/*.py
+        find . -name "*.py" | xargs pylint
 
     - name: testing
       run: | 
