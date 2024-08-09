@@ -43,3 +43,8 @@ jobs:
     - name: testing
       run: | 
         pytest || [ $? -eq 5 ]
+
+    - name: uploading coverage badge
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}    
