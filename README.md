@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/github/zinchse/hbo_bench/graph/badge.svg?token=JQIXTUX0R6)](https://codecov.io/github/zinchse/hbo_bench)
+
 **`TL;DR`** This is a platform (data + wrappers) that allows us to run tens of thousands of experiments for query optimisation via using so-called hints in a *few minutes* on a laptop. 
 The idea is that almost all the required calculations have been cached (~2 weeks of compute), and instead of execution we actually do simple look-up.
 
