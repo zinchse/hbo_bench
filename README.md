@@ -28,7 +28,7 @@ python3 process_raw_data.py
 pytest || [ $? -eq 5 ]
 ```
 
-# Data Structure & Execution Workflow
+# 🗂️ Data Structure & Execution Workflow
 
 The `raw_data.7z` archive contains the results of running the following pseudocode (all queries were executed sequentially on an free server, with the cache warmed up beforehand):
 
