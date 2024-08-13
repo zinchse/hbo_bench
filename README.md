@@ -1,7 +1,7 @@
 [![codecov](https://codecov.io/github/zinchse/hbo_bench/graph/badge.svg?token=JQIXTUX0R6)](https://codecov.io/github/zinchse/hbo_bench)
 
 **`TL;DR`** This is a platform (data + wrappers) that allows us to run tens of thousands of experiments for query optimisation via using so-called hints in a *few minutes* on a laptop. 
-The idea is that almost all the required calculations have been cached (~2 weeks of compute), and instead of execution we actually do simple look-up.
+The idea is that almost all the required calculations have been cached (~`2W` of compute, `60K`+ plans), and instead of execution we actually do simple *look-up*.
 
 **Contribution:** were collected cached query execution results with different sets of hints, and implemented `torch`-like `Dataset` and `DataLoader`, vectorisation procedure 
 for query execution plans and local search procedure for efficient exploration of parameter space.
@@ -15,7 +15,16 @@ can speed up query execution many times over (*check it!*), it is associated wit
 
 # 🧐 Why is it useful? 
 
-As a simple observation demonstrating the potential usefulness of this project, - it has allowed us to reduce the search space from exponential to **linear** with virtually no loss in performance. 
+**Adding parallelism.** 
+This dataset is not only the first of its kind but also enables the exploration of query acceleration strategies through the use of hints and control over parallelism. 
+By expanding the search space, queries can be further accelerated by an *additional* `30%`!
+
+<img src="https://github.com/user-attachments/assets/96fc53a0-31ba-4720-afdc-c0953c931349" alt="image" width="600"/>
+
+**Efficient search for quick exploration strategies.** 
+However, as the search space grows, the challenge of finding good solutions within it becomes more *pressing*. The second goal of this project is to enable quick testing of various strategies for exploring the hint space. As shown, the local search algorithm significantly accelerates exploration time, reducing it by an order of magnitude! This reduction in search space is asymptotic — the local search algorithm shifts the complexity from exponential to *linear*, with minimal performance loss. To find this configuration we went through more than 10 thousand different algorithms.
+
+<img src="https://github.com/user-attachments/assets/bfb2ebe4-45fb-4c8c-bd30-59683815b59b" alt="image" width="600"/>
 
 # 📦 Setup 
 
@@ -139,31 +148,32 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
   ]
   ```
 
-  To enumerate all combinations of such hints, we simply use bit masks corresponding to the above order (the high bit is responsible for "Nested Loop", the low bit for "Seq Scan").
+  To enumerate all combinations of such hints, we simply use **bit masks** corresponding to the above order (the high bit is responsible for "Nested Loop", the low bit for "Seq Scan").
   
 </details>
 
 
 <details>
-  <summary>Local vs Exhaustive search</summary>
+  <summary>Exploration strategies</summary>
   <p>
-    <b>Exhaustive Search</b>. When searching for the best set of hints, the problem of exploring all possible combinations inevitably arises. The basic approach of examining every possible combination is quite computationally expensive.
+    <b>Exhaustive Search</b>. 
+   When searching for the best set of hints, the problem of exploring all possible combinations inevitably arises. The basic approach of examining every possible combination is quite computationally expensive. Below is a visualisation of such an algorithm for 4 hints (the set of hints is represented by a _bitmask_), where green shows useful combinations of hints and red shows bad ones. During optimisation by exhaustive algorithm we are obliged to explore all states.
   </p>
 
-  
   <div style="text-align: center;">
     <figure style="display: inline-block;">
-      <img src="https://github.com/user-attachments/assets/399e478f-543f-43de-a73e-1d3587498816" alt="Exhaustive search" width="400"/>
+      <img src="https://github.com/user-attachments/assets/a2f8e04d-d3b9-4f3e-9350-983c3ea7e7ad" alt="Exhaustive search" width="400"/>
     </figure>
   </div>
 
   <p>
-  <b>Local Search.</b> Instead of exhaustive algorithm, <b>greedy</b> one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some <b>drawbacks</b> to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations. The <b>local search</b> algorithm differs primarily in that it takes into account the specificity of hintsets and  proposes to use additional transitions (like a dotted line). As a result, it reaches the optimum much more often. And by adding these new transitions (which are actually <b>shortcuts</b> in the search space), we can significantly reduce the number of iterations down to one.
+  <b>Local Search.</b> 
+   Instead of exhaustive algorithm, <b>greedy</b> one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some <b>drawbacks</b> to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations. The <b>local search</b> algorithm differs primarily in that it takes into account the specificity of hintsets and  proposes to use additional transitions (like a blue line, we call it **shortcut**). As a result, it reaches the optimum much more a) **often** and b) **faster**.
   </p>
-  
+
   <div style="text-align: center;">
     <figure style="display: inline-block;">
-      <img src="https://github.com/user-attachments/assets/cf9274f4-c8fc-4af5-89bf-8ba937f1cbf4" alt="Local Search" width="400"/>
+      <img src="https://github.com/user-attachments/assets/03076bb6-f3a4-46f4-a05f-2340f608abc0" alt="Local Search" width="400"/>
     </figure>
   </div>
 </details>
@@ -173,6 +183,6 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
 
 There are 2 main papers about the hint-based query optimisation approach.
 
-1. Marcus, Ryan, et al. "Bao: Making learned query optimization practical." *Proceedings of the 2021 International Conference on Management of Data*, 2021, pp. 1275-1288.
+1. [Marcus, Ryan, et al. "Bao: Making learned query optimization practical." *Proceedings of the 2021 International Conference on Management of Data*, 2021, pp. 1275-1288.](https://people.csail.mit.edu/hongzi/content/publications/BAO-Sigmod21.pdf)
 
-2. Anneser, Christoph, et al. "Autosteer: Learned query optimization for any SQL database." *Proceedings of the VLDB Endowment*, vol. 16, no. 12, 2023, pp. 3515-3527.
+2. [Anneser, Christoph, et al. "Autosteer: Learned query optimization for any SQL database." *Proceedings of the VLDB Endowment*, vol. 16, no. 12, 2023, pp. 3515-3527.](https://vldb.org/pvldb/vol16/p3515-anneser.pdf)
