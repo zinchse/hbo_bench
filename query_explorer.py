@@ -1,13 +1,3 @@
-"""
-The module represents an emulation of the logic of a local search 
-algorithm for exploring suitable parameters for a query. 
-
-It is assumed that the exploration takes place in parallel mode 
-(i.e. within one iteration all candidates are explored simultaneously), 
-and any interaction with the database is modeled by the corresponding 
-wrapper (`_get_...`).
-"""
-
 from typing import Set, List, Tuple
 from collections import namedtuple
 from oracle import Oracle, OracleRequest
