@@ -152,28 +152,40 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
   
 </details>
 
+<details>
+  <summary>Hint-based optimisation approach</summary>
+
+ Due to errors during planning, not the most optimal operators / order of their application are chosen. In order to 
+ help the optimiser to correct these errors you can tell it something like "don't use `operator_X`" using the `set enable_operator_X to off;` command. The planner will then assume
+ that any use of this operator is much more expensive than it thought before (a _hardcoded_ constant is added), and will _probably_ prefer it to another operator.
+ 
+</details>
 
 <details>
   <summary>Exploration strategies</summary>
+ <br>
   <p>
     <b>Exhaustive Search</b>. 
-   When searching for the best set of hints, the problem of exploring all possible combinations inevitably arises. The basic approach of examining every possible combination is quite computationally expensive. Below is a visualisation of such an algorithm for 4 hints (the set of hints is represented by a _bitmask_), where green shows useful combinations of hints and red shows bad ones. During optimisation by exhaustive algorithm we are obliged to explore all states.
+
+   
+   When searching for the best set of hints, the problem of exploring all possible combinations inevitably arises. The basic approach of examining every possible combination is quite computationally expensive. Below is a visualisation of such an algorithm for 4 hints (the set of hints is represented by a _bitmask_, where green shows useful combinations of hints and red shows bad ones. During optimisation by exhaustive algorithm we are obliged to explore all states.
   </p>
 
   <div style="text-align: center;">
     <figure style="display: inline-block;">
-      <img src="https://github.com/user-attachments/assets/a2f8e04d-d3b9-4f3e-9350-983c3ea7e7ad" alt="Exhaustive search" width="400"/>
+      <img src="https://github.com/zinchse/hbo_bench/blob/main/exhaustive_search.svg" alt="Exhaustive search" width="400"/>
     </figure>
   </div>
 
   <p>
   <b>Local Search.</b> 
-   Instead of exhaustive algorithm, <b>greedy</b> one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some <b>drawbacks</b> to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations. The <b>local search</b> algorithm differs primarily in that it takes into account the specificity of hintsets and  proposes to use additional transitions (like a blue line, we call it **shortcut**). As a result, it reaches the optimum much more a) **often** and b) **faster**.
+   
+   Instead of exhaustive algorithm, **greedy** one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some **drawbacks** to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations. The **local search** algorithm differs primarily in that it takes into account the specificity of hintsets and  proposes to use additional transitions (like a blue line, we call it **shortcut**). As a result, it reaches the optimum much more a) **often** and b) **faster**.
   </p>
 
   <div style="text-align: center;">
     <figure style="display: inline-block;">
-      <img src="https://github.com/user-attachments/assets/03076bb6-f3a4-46f4-a05f-2340f608abc0" alt="Local Search" width="400"/>
+      <img src="https://github.com/zinchse/hbo_bench/blob/main/local_search.svg" alt="Local Search" width="400"/>
     </figure>
   </div>
 </details>
