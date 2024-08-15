@@ -173,19 +173,30 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
 
   <div style="text-align: center;">
     <figure style="display: inline-block;">
-      <img src="https://github.com/zinchse/hbo_bench/blob/main/exhaustive_search.svg" alt="Exhaustive search" width="400"/>
+      <img src="https://github.com/zinchse/hbo_bench/blob/main/images/exhaustive_search.svg" alt="Exhaustive search" width="400"/>
+    </figure>
+  </div>
+
+  <p>
+  <b>Greedy Search.</b> 
+
+  Instead of exhaustive algorithm, **greedy** one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some **drawbacks** to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations.
+
+  <div style="text-align: center;">
+    <figure style="display: inline-block;">
+      <img src="https://github.com/zinchse/hbo_bench/blob/main/images/greedy_search.svg" alt="Local Search" width="400"/>
     </figure>
   </div>
 
   <p>
   <b>Local Search.</b> 
    
-   Instead of exhaustive algorithm, **greedy** one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some **drawbacks** to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations. The **local search** algorithm differs primarily in that it takes into account the specificity of hintsets and  proposes to use additional transitions (like a blue line, we call it **shortcut**). As a result, it reaches the optimum much more a) **often** and b) **faster**.
+  The **local search** algorithm differs primarily in that it takes into account the specificity of hintsets and proposes to use additional transitions (dotted green line, we call it **shortcut**). As a result, it reaches the optimum much more a) **often** and b) **faster**.
   </p>
 
   <div style="text-align: center;">
     <figure style="display: inline-block;">
-      <img src="https://github.com/zinchse/hbo_bench/blob/main/local_search.svg" alt="Local Search" width="400"/>
+      <img src="https://github.com/zinchse/hbo_bench/blob/main/images/local_search.svg" alt="Local Search" width="400"/>
     </figure>
   </div>
 </details>
