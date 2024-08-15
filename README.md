@@ -164,10 +164,9 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
 <details>
   <summary>Exploration strategies</summary>
  <br>
-  <p>
-    <b>Exhaustive Search</b>. 
 
-   
+ 
+   <b>Exhaustive Search</b>. 
    When searching for the best set of hints, the problem of exploring all possible combinations inevitably arises. The basic approach of examining every possible combination is quite computationally expensive. Below is a visualisation of such an algorithm for 4 hints (the set of hints is represented by a _bitmask_, where green shows useful combinations of hints and red shows bad ones. During optimisation by exhaustive algorithm we are obliged to explore all states.
   </p>
 
@@ -177,9 +176,7 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
     </figure>
   </div>
 
-  <p>
   <b>Greedy Search.</b> 
-
   Instead of exhaustive algorithm, **greedy** one can be employed. The essence of this approach is to iteratively expand the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces search space from exponential to quadratic. However, there are some **drawbacks** to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations.
 
   <div style="text-align: center;">
@@ -188,9 +185,7 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
     </figure>
   </div>
 
-  <p>
   <b>Local Search.</b> 
-   
   The **local search** algorithm differs primarily in that it takes into account the specificity of hintsets and proposes to use additional transitions (dotted green line, we call it **shortcut**). As a result, it reaches the optimum much more a) **often** and b) **faster**.
   </p>
 
