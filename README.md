@@ -80,6 +80,7 @@ with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
     explain_plan = query_data["hs_to_explain_plan"]["42"]
     explain_analyze_plan = query_data["explain_plan_to_explain_analyze_plan"][json.dumps(explain_plan)]
     planning_time = query_data["hs_to_planning_time"]["42"]
+    # sometimes it won't work cause of T/O, there's garantee only for default hintset (0)
     execution_time = explain_analyze_plan["Total Runtime"]
 ```
 
