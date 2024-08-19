@@ -7,68 +7,67 @@ EMPTY_SS = SearchingSettings(
 )
 
 GREEDY_DEF_DOP_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     max_iter=float("inf"),
 )
 
 PRUNED_GREEDY_DEF_DOP_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     max_iter=1,
 )
 
 GREEDY_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     decrease_dop=True,
     max_iter=float("inf"),
 )
 
 PRUNED_GREEDY_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     decrease_dop=True,
     max_iter=1,
 )
 
 LOCAL_DEF_DOP_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     disable_inl=True,
-    force_join=True,
-    force_only_nl=True,
     max_iter=float("inf"),
 )
 
 PRUNED_LOCAL_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     disable_inl=True,
-    force_join=True,
-    force_only_nl=True,
     max_iter=1,
 )
 
 PRUNED_LOCAL_DEF_DOP_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     disable_inl=True,
-    force_join=True,
-    force_only_nl=True,
     max_iter=1,
 )
 
 PRUNED_LOCAL_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     decrease_dop=True,
     disable_inl=True,
     use_joined_search=True,
-    force_join=True,
-    force_only_nl=True,
     max_iter=1,
 )
 
 LOCAL_SS = SearchingSettings(
-    disable_ops=True,
+    disable_scans=True,
+    disable_joins=True,
     decrease_dop=True,
     disable_inl=True,
     use_joined_search=True,
-    force_join=True,
-    force_only_nl=True,
     max_iter=float("inf"),
 )
 
