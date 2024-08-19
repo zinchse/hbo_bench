@@ -17,14 +17,13 @@ SearchingState = namedtuple("SearchingState", ["hintset", "dop"], defaults=[DEFA
 SearchingSettings = namedtuple(
     "SearchingSettings",
     [
-        "disable_ops",
+        "disable_joins",
+        "disable_scans",
         "decrease_dop",
         "disable_inl",
         "relative_boost_threshold",
         "max_iter",
         "use_joined_search",
-        "force_join",
-        "force_only_nl",
         "default_hintset",
         "default_dop",
         "hardcoded_hintsets",
@@ -34,10 +33,9 @@ SearchingSettings = namedtuple(
         False,
         False,
         False,
+        False,
         1.0,
         1,
-        False,
-        False,
         False,
         DEFAULT_HINTSET,
         DEFAULT_DOP,
@@ -118,8 +116,12 @@ class QueryExplorer:
             to_try_dops = [current_dop]
 
         for dop in to_try_dops:
-            if self.settings.disable_ops:
-                for op_num in range(len(HINTS)):
+            if self.settings.disable_scans:
+                for op_num in range(N_SCANS):
+                    neighbors.add(SearchingState(dop=dop, hintset=current_hintset | (1 << op_num)))
+
+            if self.settings.disable_joins:
+                for op_num in range(N_SCANS, N_SCANS + N_JOINS):
                     neighbors.add(SearchingState(dop=dop, hintset=current_hintset | (1 << op_num)))
 
             if self.settings.disable_inl:
@@ -128,17 +130,5 @@ class QueryExplorer:
             if self.settings.decrease_dop:
                 for new_dop in [new_dop for new_dop in DOPS if new_dop < dop]:
                     neighbors.add(SearchingState(dop=new_dop, hintset=current_hintset))
-
-            if self.settings.force_join:
-                for join_num in range(N_JOINS):
-                    saved_scans = ((1 << N_SCANS) - 1) & current_hintset
-                    only_one_join = (((1 << N_JOINS) - 1) - (1 << join_num)) << N_SCANS
-                    neighbors.add(SearchingState(dop=dop, hintset=only_one_join | saved_scans))
-
-            if self.settings.force_only_nl:
-                join_num = NL_POS
-                saved_scans = ((1 << N_SCANS) - 1) & current_hintset
-                only_one_join = (((1 << N_JOINS) - 1) - (1 << join_num)) << N_SCANS
-                neighbors.add(SearchingState(dop=dop, hintset=only_one_join | saved_scans))
 
         return [state] + list(neighbors)
