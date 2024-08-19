@@ -28,9 +28,13 @@ class ExplainNode(BaseModel):
     cost: "Cost" = Field(alias="Total Cost")
 
 
-class ExplainAnalyzeNode(ExplainNode):
-    real_cardinality: "Cardinality" = Field(alias="Actual Rows")
-    cost: "Cost" = Field(alias="Total Cost")
+class ExplainAnalyzeNode(BaseModel):
+    node_type: "NodeType" = Field(alias="Node Type")
+    plans: "List[ExplainAnalyzeNode]" = Field(default=[], alias="Plans")
+    estimated_cardinality: "Cardinality" = Field(alias="Plan Rows")
+    real_cardinality: "Cardinality" = Field(alias="Actual Rows", default=0)
+    index_name: "Optional[RelationName]" = Field(default=None, alias="Index Name")
+    relation_name: "Optional[RelationName]" = Field(default=None, alias="Relation Name")
 
 
 class ExplainPlan(BaseModel):
@@ -39,8 +43,10 @@ class ExplainPlan(BaseModel):
     planning_time: "Time" = Field(alias="Planner Runtime")
 
 
-class ExplainAnalyzePlan(ExplainPlan):
+class ExplainAnalyzePlan(BaseModel):
     plan: "ExplainAnalyzeNode" = Field(alias="Plan")
+    template_id: "TemplateID" = Field(alias="Unique SQL Id")
+    planning_time: "Time" = Field(alias="Planner Runtime")
     execution_time: "Time" = Field(alias="Total Runtime")
 
 
