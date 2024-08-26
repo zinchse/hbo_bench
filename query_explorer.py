@@ -110,7 +110,7 @@ class QueryExplorer:
         current_dop, current_hintset = state.dop, state.hintset
         neighbors = set()
 
-        if self.settings.use_joined_search:
+        if self.settings.use_joined_search and self.settings.decrease_dop:
             to_try_dops = DOPS
         else:
             to_try_dops = [current_dop]
