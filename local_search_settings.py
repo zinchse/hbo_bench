@@ -39,13 +39,6 @@ LOCAL_DEF_DOP_SS = SearchingSettings(
     max_iter=float("inf"),
 )
 
-PRUNED_LOCAL_SS = SearchingSettings(
-    disable_scans=True,
-    disable_joins=True,
-    disable_inl=True,
-    max_iter=1,
-)
-
 PRUNED_LOCAL_DEF_DOP_SS = SearchingSettings(
     disable_scans=True,
     disable_joins=True,
