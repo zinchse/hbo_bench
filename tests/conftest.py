@@ -1,7 +1,7 @@
 import pytest
 from hbo_bench.oracle import Oracle
 
-TPCH_ORACLE = Oracle("data/processed/tpch_10gb")
+TPCH_ORACLE = Oracle("src/hbo_bench/data/processed/tpch_10gb")
 
 
 @pytest.fixture
