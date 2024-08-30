@@ -32,9 +32,9 @@ However, as the search space grows, the challenge of finding good solutions with
 python -m pip install --upgrade pip
 python3 -v venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -e .
 sudo apt-get install -y p7zip-full
-7za x data/raw/raw_data.7z -odata/raw
+7za x src/hbo_bench/data/raw/raw_data.7z -osrc/hbo_bench/data/raw
 python3 process_raw_data.py
 pytest || [ $? -eq 5 ]
 ```
@@ -67,14 +67,14 @@ for dop in [1, 16, 64]:
 
 The key object that allows emulation of DBMS operation is `Oracle` (terminology is taken from maths, no connection with @Oracle). The simplest examples of using its functionality are presented in `example.ipynb` 
 
-[![example.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zinchse/hbo_bench/blob/main/example.ipynb)
+[![example.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zinchse/hbo_bench/blob/main/src/hbo_bench/example.ipynb)
 
 **Example.** How to access the stored data _directly_:
 ```python
 import json
 dop = 1
 benchmark_name = "JOB"
-with open(f"data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
+with open(f"src/hbo_bench/data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
     data = json.load(f)
     query_data = data["1b.sql"]
     explain_plan = query_data["hs_to_explain_plan"]["42"]
