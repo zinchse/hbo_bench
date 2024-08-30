@@ -23,7 +23,7 @@ jobs:
     - name: raw data extracting
       run: |
         sudo apt-get install -y p7zip-full
-        7za x data/raw/raw_data.7z -odata/raw
+        7za x src/hbo_bench/data/raw/raw_data.7z -osrc/hbo_bench/data/raw
     
     - name: raw data processing
       run: |
