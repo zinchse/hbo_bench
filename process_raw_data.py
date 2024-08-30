@@ -52,16 +52,17 @@ def process_raw_data(path_to_raw: "str", path_to_processed: "str", bench_name: "
 
 
 if __name__ == "__main__":
+    data_folder = "src/hbo_bench/data"
     for name in BENCH_NAMES:
-        if os.path.exists(f"data/processed/{name}"):
-            print(f"Please, clear the folder 'data/processed/{name}' before processing")
+        if os.path.exists(f"{data_folder}/processed/{name}"):
+            print(f"Please, clear the folder '{data_folder}/processed/{name}' before processing")
             break
     else:
         for name in BENCH_NAMES:
             print(f"Processing raw data from '{name}' has been started")
             process_raw_data(
-                path_to_processed="data/processed",
-                path_to_raw="data/raw",
+                path_to_processed=f"{data_folder}/processed",
+                path_to_raw=f"{data_folder}/raw",
                 bench_name=name,
             )
             print(f"Raw data for '{name}' has been processed")
