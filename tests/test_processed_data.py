@@ -5,7 +5,7 @@ from hbo_bench.data_config import DOPS, HINTSETS, BENCH_NAME_TO_SIZE, BENCH_NAME
 from hbo_bench.data_types import Plans
 
 
-PATH_TO_DATASET = "data/processed"
+PATH_TO_DATASET = "src/hbo_bench/data/processed"
 EXPECTED_QUERY_DATA_SIZE = len(DOPS) * len(HINTSETS)
 
 

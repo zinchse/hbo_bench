@@ -4,7 +4,7 @@ from hbo_bench.data_config import BENCH_NAME_TO_SIZE
 from hbo_bench.data_types import ExplainAnalyzePlan, ExplainPlan, Time, QueryName, Cost
 
 
-PATH_TO_DATA: "str" = "data/processed"
+PATH_TO_DATA: "str" = "src/hbo_bench/data/processed"
 BENCH_NAME_TO_EXAMPLE_QUERY: "Dict[str, QueryName]" = {
     "JOB": "1b",
     "sample_queries": "q10_2a265",
