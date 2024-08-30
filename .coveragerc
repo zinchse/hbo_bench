@@ -1,5 +1,6 @@
 [run]
 omit = 
     process_raw_data.py
-    utils.py
+    src/hbo_bench/utils.py
+    setup.py
 
