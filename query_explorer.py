@@ -1,8 +1,8 @@
 from typing import Set, List, Tuple
 from collections import namedtuple
-from oracle import Oracle, OracleRequest
-from data_types import QueryName, Time, ExplainPlan
-from data_config import DEFAULT_DOP, DEFAULT_HINTSET, DOPS, HINTS
+from hbo_bench.oracle import Oracle, OracleRequest
+from hbo_bench.data_types import QueryName, Time, ExplainPlan
+from hbo_bench.data_config import DEFAULT_DOP, DEFAULT_HINTSET, DOPS, HINTS
 
 
 OFF_INL_HINT = 64 | 8 | 2

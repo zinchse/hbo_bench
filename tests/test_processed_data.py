@@ -1,8 +1,8 @@
 import os
 import json
 import pytest
-from data_config import DOPS, HINTSETS, BENCH_NAME_TO_SIZE, BENCH_NAMES
-from data_types import Plans
+from hbo_bench.data_config import DOPS, HINTSETS, BENCH_NAME_TO_SIZE, BENCH_NAMES
+from hbo_bench.data_types import Plans
 
 
 PATH_TO_DATASET = "data/processed"

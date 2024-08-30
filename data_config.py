@@ -1,5 +1,5 @@
 from typing import Dict, List
-from data_types import Hint, HintsetCode, QueryDop, GUC
+from hbo_bench.data_types import Hint, HintsetCode, QueryDop, GUC
 
 
 HINTS: "List[Hint]" = [

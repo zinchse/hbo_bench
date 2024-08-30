@@ -1,7 +1,7 @@
 from json import load, dumps, dump
 import os
 from typing import Dict
-from data_types import Plans
+from hbo_bench.data_types import Plans
 
 BENCH_NAMES = ["JOB", "sample_queries", "tpch_10gb"]
 DOPS = [1, 16, 64]

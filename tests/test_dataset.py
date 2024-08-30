@@ -1,8 +1,8 @@
-from oracle import Oracle, OracleRequest
-from vectorization import extract_vertices_and_edges
-from dataset import WeightedBinaryTreeDataset, weighted_binary_tree_collate
+from hbo_bench.oracle import Oracle, OracleRequest
+from hbo_bench.vectorization import extract_vertices_and_edges
+from hbo_bench.dataset import WeightedBinaryTreeDataset, weighted_binary_tree_collate
+from hbo_bench.utils import preprocess, MAX_TREE_LENGTH
 import torch
-from utils import preprocess, MAX_TREE_LENGTH
 from torch.utils.data import DataLoader
 
 

@@ -1,7 +1,7 @@
 from typing import Dict
-from oracle import Oracle, OracleRequest
-from data_config import BENCH_NAME_TO_SIZE
-from data_types import ExplainAnalyzePlan, ExplainPlan, Time, QueryName, Cost
+from hbo_bench.oracle import Oracle, OracleRequest
+from hbo_bench.data_config import BENCH_NAME_TO_SIZE
+from hbo_bench.data_types import ExplainAnalyzePlan, ExplainPlan, Time, QueryName, Cost
 
 
 PATH_TO_DATA: "str" = "data/processed"

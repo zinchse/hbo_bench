@@ -1,5 +1,5 @@
-from oracle import Oracle, OracleRequest
-from vectorization import extract_vertices_and_edges, ALL_OPERATIONS
+from hbo_bench.oracle import Oracle, OracleRequest
+from hbo_bench.vectorization import extract_vertices_and_edges, ALL_OPERATIONS
 import math
 import torch
 

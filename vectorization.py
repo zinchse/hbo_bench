@@ -2,7 +2,7 @@ from typing import Dict, Tuple, List
 import math
 import torch
 from torch import Tensor
-from data_types import ExplainNode, ExplainPlan
+from hbo_bench.data_types import ExplainNode, ExplainPlan
 
 
 # works only for `JOB` and `sample_queries``

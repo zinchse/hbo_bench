@@ -2,11 +2,11 @@ from collections import defaultdict
 from typing import List, Tuple, TypedDict
 import torch
 from torch import Tensor
-from data_types import ExplainPlan, ExplainNode, Cardinality, Selectivity, QueryName, HintsetCode, QueryDop
-from dataset import paddify_sequences
-from oracle import Oracle, OracleRequest, TIMEOUT
-from vectorization import extract_vertices_and_edges
-from data_config import HINTSETS, DOPS, DEFAULT_HINTSET
+from hbo_bench.data_types import ExplainPlan, ExplainNode, Cardinality, Selectivity, QueryName, HintsetCode, QueryDop
+from hbo_bench.dataset import paddify_sequences
+from hbo_bench.oracle import Oracle, OracleRequest, TIMEOUT
+from hbo_bench.vectorization import extract_vertices_and_edges
+from hbo_bench.data_config import HINTSETS, DOPS, DEFAULT_HINTSET
 
 
 # hardcoded constant

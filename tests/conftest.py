@@ -1,10 +1,5 @@
-import sys
-import os
 import pytest
-
-sys.path.insert(0, os.getcwd())
-
-from oracle import Oracle
+from hbo_bench.oracle import Oracle
 
 TPCH_ORACLE = Oracle("data/processed/tpch_10gb")
 

@@ -1,5 +1,5 @@
-from query_explorer import SearchingSettings
-from data_config import HINTSETS, DOPS, DEFAULT_DOP
+from hbo_bench.query_explorer import SearchingSettings
+from hbo_bench.data_config import HINTSETS, DOPS, DEFAULT_DOP
 
 EMPTY_SS = SearchingSettings(
     hardcoded_hintsets=[],

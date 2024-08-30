@@ -2,7 +2,7 @@ import os
 from json import load
 from typing import Optional, Dict
 from pydantic import BaseModel
-from data_types import (
+from hbo_bench.data_types import (
     QueryName,
     QueryDop,
     HintsetCode,
