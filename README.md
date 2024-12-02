@@ -1,29 +1,15 @@
-**`TL;DR`** This is a reusable platform (data + wrappers) that allows running tens of thousands of experiments for query optimization using so-called hints in just *a few minutes* on a laptop. The idea is that almost all necessary calculations have been cached (~`2W` of compute, `60K`+ plans), and instead of real query execution, we simply perform look-up operation in the table.
+**`TL;DR`** This is a reusable platform (data + wrappers) that allows running tens of thousands of experiments for query optimization using "hints" in just a few minutes on a laptop.
 
-**Contribution:**
-- Collected cached query execution results using different sets of hints.
+**⚡ Key Features:**
+- Super fast prototyping of hint-based approaches cause of using look-up insted of real execution.
 - Implemented `torch`-like `Dataset` and `DataLoader` objects for efficient data handling.
+- Prototype (`query_explorer.py`) for experimenting with different query exploration strategies.
 
-# 💡 Idea Behind This Benchmark
+# 💡 Concept
 
-**H**int-**B**ased query **O**ptimization (HBO) is an approach to optimizing query execution time that accelerates workload execution without changing a single line of the DBMS kernel code. This is achieved by selecting planner hyperparameters (*hints*) that influence the construction of the query execution plan. Although this approach can greatly speed up query execution, it faces a fundamental challenge — the search space is **exponential**, and the cost of exploring a "point" within it **depends on its execution time**.
+Save all necessary data while developing a hint-based optimization approach, enabling a single look-up later instead of real execution. This dramatically reduces computation time during algorithm development.
+We conducted ~2 week of computes and collected results for ~60K plans.
 
-# 🧐 Why Is This Benchmark Useful?
-
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-    <img src="https://github.com/user-attachments/assets/af13aa42-b01b-44eb-9670-747fc59dce7d" alt="image" width="600"/>
-</div>
-
-Our benchmark provides a reusable platform that enables rapid experimentation with various query optimization algorithms. By leveraging this benchmark, we developed a new Local Search algorithm that significantly outperforms existing approaches. A key innovation is the expansion of the operation-related parameter space. By introducing parallelism control, we extended the traditional optimization space to include dop. 
-```math
-\Theta = \underbrace{\Theta_{scans} \times \Theta_{joins}}_{\Theta_{ops}} \times \textcolor{Maroon}{\mathbf{\Theta_{dop}}}.
-```
-This expansion allowed us to achieve a 3x acceleration in query performance, compared to the previous 2x, setting a **new standard** for hint-based optimization. While expanding the search space offers more optimization opportunities, it also makes finding optimal solutions more complex. We tackled this challenge by developing a highly efficient Local Search algorithm. This algorithm incorporates multiple optimizations, allowing it to navigate the expanded search space **(a)** quickly and **(b)** effectively, providing fast convergence to solutions that were previously unattainable.
-
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <img src="https://github.com/user-attachments/assets/e1ca29c4-518a-4e66-949e-097da11fcd14" alt="image1" style="height: 250px;"/>
-    <img src="https://github.com/user-attachments/assets/82cc8d8a-2b04-4d5d-9077-7aede5951fe7" alt="image2" style="height: 250px;"/>
-</div>
 
 # 📦 Setup
 
@@ -82,12 +68,73 @@ with open(f"src/hbo_bench/data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
     execution_time = explain_analyze_plan["Total Runtime"]
 ```
 
-# 🔗 Details
+
+# ⓘ FAQ
 
 <details>
-  <summary>Server's Settings</summary>
+  <summary><strong>What is the hint-based optimization?</strong></summary>
 
-  All data were obtained on @OpenGauss RDBMS on the server with the following settings:
+  Hint-Based query Optimization (HBO) is an approach to optimizing query execution time that accelerates workload execution without changing a single line of the DBMS kernel code. This is achieved by selecting planner hyperparameters (hints) that influence the construction of the query execution plan. Although this approach can greatly speed up query execution, it faces a fundamental challenges. In first, there's no universal hint. In second, the search space is exponential, and the cost of exploring a "point" within it depends on its execution time. As result, we must construct and train an intelligent hint-advisor to cope with them.
+
+</details>
+
+<details>
+  <summary><strong>Why that platform is useful?</strong></summary>
+
+  The main problem in hint-based optimization is that we don't know in advance what is the best hint set for a query. To find it, in general, we need to try all combinations. And the cost of each try is the time the query executes with such hints. This platform helped make us free from real execution, as a result, we can prototype solutions much faster. In practice, that platform allowed us to develop a well-balanced query explorer for selecting the best hint combination, outperforming state-of-the-art results of hint-based query optimization in both speed and overall performance. For details, see the repository of our paper **[HERO: New Learned Hint-based Efficient and Reliable Query Optimizer](https://github.com/zinchse/hero)**.
+    
+</details>
+
+<details>
+  <summary>How data were collected?</summary>
+
+  For fast experimentation with tens of thousands of different hint exploration strategies we implemented the following approach: for every query from these benchmarks and for all possible hint combinations, we saved execution plans and their latencies obtained on [OpenGauss DB](https://opengauss.org/en/aboutUs/). This allowed us to replace actual query execution with a simple table lookup. To ensure the consistency of the collected data, the server was exclusively used during idle periods, with statistics updates disabled, and the database pre-warmed before each query execution.
+  
+</details>
+
+<details>
+  <summary><strong>What data benchmark are used?</strong></summary>
+    
+  For experimental evaluation, we used two IMDb-based benchmarks: [JOB benchmark](https://www.vldb.org/pvldb/vol9/p204-leis.pdf) consisting of 113 queries and its skewed version SQ (sample_queries from the [repository](https://dl.acm.org/doi/10.1145/3448016.3452838) of [Marcus, Ryan, et al. "Bao: Making learned query optimization practical."](https://people.csail.mit.edu/hongzi/content/publications/BAO-Sigmod21.pdf)) with 40 queries. Additionally, we used [TPCH benchmark](https://www.tpc.org/tpch/) with 22 queries, with a scale factor of 10.
+
+</details>
+
+<details>
+  <summary>Which hints were used?</summary>
+  
+  The following list of hints was used, controlled by the corresponding global user configuration parameters (`GUC`s):
+  
+  ```python
+  HINTS: "List[Hint]" = [
+      "Nested Loop",
+      "Merge",
+      "Hash",
+      "Bitmap",
+      "Index Only Scan",
+      "Index Scan",
+      "Seq Scan",
+  ]
+
+  GUCS: "List[GUC]" = [
+      "nestloop",
+      "mergejoin",
+      "hashjoin",
+      "bitmapscan",
+      "indexonlyscan",
+      "indexscan",
+      "seqscan",
+  ]
+  ```
+
+  To enumerate all combinations of such hints, we simply use **bit masks** corresponding to the order above (the high bit is responsible for "Nested Loop", and the low bit for "Seq Scan").
+
+</details>
+
+<details>
+  <summary>What is the configuration of used server?</summary>
+
+  All data were obtained on [OpenGauss DB](https://opengauss.org/en/aboutUs/) 
+ on the server with the following settings:
 
   | Parameter                          | Value          |
   |------------------------------------|----------------|
@@ -115,83 +162,12 @@ with open(f"src/hbo_bench/data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
   | Stepping                           | 0x1            |
   | CPU MHz                            | 2600.000       |
   | CPU max MHz                        | 2600.0000      |
+
 </details>
-
-<details>
-  <summary>Hints</summary>
-  
-  The following list of hints was used, controlled by the corresponding global user configuration parameters (`GUC`s):
-  
-  ```python
-  HINTS: "List[Hint]" = [
-      "Nested Loop",
-      "Merge",
-      "Hash",
-      "Bitmap",
-      "Index Only Scan",
-      "Index Scan",
-      "Seq Scan",
-  ]
-
-  GUCS: "List[GUC]" = [
-      "nestloop",
-      "mergejoin",
-      "hashjoin",
-      "bitmapscan",
-      "indexonlyscan",
-      "indexscan",
-      "seqscan",
-  ]
-  ```
-
-  To enumerate all combinations of such hints, we simply use **bit masks** corresponding to the order above (the high bit is responsible for "Nested Loop", and the low bit for "Seq Scan").
-</details>
-
-<details>
-  <summary>Hint-Based Optimization Approach</summary>
-
- Due to errors during planning, the most optimal operators or the order of their application might not be selected. To help the optimizer correct these errors, you can tell it something like "don't use `operator_X`" using the `set enable_operator_X to off;` command. The planner will then assume that any use of this operator is much more expensive than it initially thought (a _hardcoded_ constant is added), and will _likely_ prefer another operator.
-</details>
-
-<details>
-  <summary>Exploration Strategies</summary>
- <br>
-
- 
-   <b>Exhaustive Search</b>. 
-   When searching for the best set of hints, the problem of exploring all possible combinations inevitably arises. The basic approach of examining every possible combination is computationally expensive. Below is a visualization of such an algorithm for 4 hints (the set of hints is represented by a _bitmask_, where green shows useful combinations of hints and red shows bad ones). During optimization by the exhaustive algorithm, we are required to explore all states:
-  </p>
-
-  <div style="text-align: center;">
-    <figure style="display: inline-block;">
-      <img src="https://github.com/zinchse/hbo_bench/blob/main/images/exhaustive_search.svg" alt="Exhaustive search" width="400"/>
-    </figure>
-  </div>
-
-  <b>Greedy Search.</b> 
-  Instead of the exhaustive algorithm, a **greedy** one can be employed. This approach iteratively expands the set of applied hints by adding one new hint that provides the greatest improvement to the current set. It reduces the search space from exponential to quadratic. However, there are some **drawbacks** to the greedy algorithm. Firstly, it may not always lead to the optimal solution (purple star) due to its greedy nature. Secondly, it is difficult to parallelize since it requires a sequential execution of several iterations.
-
-  <div style="text-align: center;">
-    <figure style="display: inline-block;">
-      <img src="https://github.com/zinchse/hbo_bench/blob/main/images/greedy_search.svg" alt="Local Search" width="400"/>
-    </figure>
-  </div>
-
-  <b>Local Search.</b> 
-  The **local search** algorithm differs primarily in that it considers the specificity of hint sets and proposes using additional transitions (dotted green line, referred to as **shortcut**). As a result, it reaches the optimum more a) **often** and b) **faster**.
-  </p>
-
-  <div style="text-align: center;">
-    <figure style="display: inline-block;">
-      <img src="https://github.com/zinchse/hbo_bench/blob/main/images/local_search.svg" alt="Local Search" width="400"/>
-    </figure>
-  </div>
-</details>
-
 
 # 📚 References
 
-There are two main papers on the hint-based query optimization approach:
+There are two main papers on the hint-based query optimization approach and useful links:
 
 1. [Marcus, Ryan, et al. "Bao: Making learned query optimization practical." *Proceedings of the 2021 International Conference on Management of Data*, 2021, pp. 1275-1288.](https://people.csail.mit.edu/hongzi/content/publications/BAO-Sigmod21.pdf)
 
