@@ -70,37 +70,36 @@ with open(f"src/hbo_bench/data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
 
 
 # ⓘ FAQ
-
 <details>
-  <summary><strong>What is the hint-based optimization?</strong></summary>
+  <summary><strong>What is hint-based optimization?</strong></summary>
 
-  Hint-Based query Optimization (HBO) is an approach to optimizing query execution time that accelerates workload execution without changing a single line of the DBMS kernel code. This is achieved by selecting planner hyperparameters (hints) that influence the construction of the query execution plan. Although this approach can greatly speed up query execution, it faces a fundamental challenges. In first, there's no universal hint. In second, the search space is exponential, and the cost of exploring a "point" within it depends on its execution time. As result, we must construct and train an intelligent hint-advisor to cope with them.
+  Hint-based Query Optimization (HBO) is a technique used to optimize query execution time by improving workload execution without modifying a single line of the DBMS kernel code. This is achieved by selecting planner hyperparameters (hints) that influence the construction of the query execution plan. Although this approach can greatly speed up query execution, it faces several fundamental challenges. First, there is no universal hint. Second, the search space is exponential, and the cost of exploring a "point" within it depends on its execution time. As a result, we need to construct and train an intelligent hint-advisor to address these challenges.
 
 </details>
 
 <details>
-  <summary><strong>Why that platform is useful?</strong></summary>
+  <summary><strong>Why is this platform useful?</strong></summary>
 
-  The main problem in hint-based optimization is that we don't know in advance what is the best hint set for a query. To find it, in general, we need to try all combinations. And the cost of each try is the time the query executes with such hints. This platform helped make us free from real execution, as a result, we can prototype solutions much faster. In practice, that platform allowed us to develop a well-balanced query explorer for selecting the best hint combination, outperforming state-of-the-art results of hint-based query optimization in both speed and overall performance. For details, see the repository of our paper **[HERO: New Learned Hint-based Efficient and Reliable Query Optimizer](https://github.com/zinchse/hero)**.
-    
-</details>
-
-<details>
-  <summary>How data were collected?</summary>
-
-  For fast experimentation with tens of thousands of different hint exploration strategies we implemented the following approach: for every query from these benchmarks and for all possible hint combinations, we saved execution plans and their latencies obtained on [OpenGauss DB](https://opengauss.org/en/aboutUs/). This allowed us to replace actual query execution with a simple table lookup. To ensure the consistency of the collected data, the server was exclusively used during idle periods, with statistics updates disabled, and the database pre-warmed before each query execution.
-  
-</details>
-
-<details>
-  <summary><strong>What data benchmark are used?</strong></summary>
-    
-  For experimental evaluation, we used two IMDb-based benchmarks: [JOB benchmark](https://www.vldb.org/pvldb/vol9/p204-leis.pdf) consisting of 113 queries and its skewed version SQ (sample_queries from the [repository](https://dl.acm.org/doi/10.1145/3448016.3452838) of [Marcus, Ryan, et al. "Bao: Making learned query optimization practical."](https://people.csail.mit.edu/hongzi/content/publications/BAO-Sigmod21.pdf)) with 40 queries. Additionally, we used [TPCH benchmark](https://www.tpc.org/tpch/) with 22 queries, with a scale factor of 10.
+  The main problem in hint-based optimization is that we don’t know in advance which hint set is best for a query. To find the optimal hint set, we typically need to try all possible combinations. The cost of each trial is the time it takes to execute the query with those hints. This platform helps free us from real execution, allowing us to prototype solutions much faster. In practice, this platform enabled us to develop a well-balanced query explorer for selecting the best hint combination, outperforming state-of-the-art results in both speed and overall performance. For details, see the repository for our paper **[HERO: New Learned Hint-based Efficient and Reliable Query Optimizer](https://github.com/zinchse/hero)**.
 
 </details>
 
 <details>
-  <summary>Which hints were used?</summary>
+  <summary><strong>How was the data collected?</strong></summary>
+
+  To experiment quickly with tens of thousands of different hint exploration strategies, we implemented the following approach: for every query from these benchmarks and all possible hint combinations, we saved execution plans and their latencies obtained from [OpenGauss DB](https://opengauss.org/en/aboutUs/). This allowed us to replace real query execution with a simple table lookup. To ensure the consistency of the collected data, the server was used exclusively during idle periods, with statistics updates disabled, and the database was pre-warmed before each query execution.
+
+</details>
+
+<details>
+  <summary><strong>Which data benchmarks were used?</strong></summary>
+
+  For experimental evaluation, we used two IMDb-based benchmarks: the [JOB benchmark](https://www.vldb.org/pvldb/vol9/p204-leis.pdf) consisting of 113 queries and its skewed version, SQ (sample_queries from the [repository](https://dl.acm.org/doi/10.1145/3448016.3452838) of [Marcus, Ryan, et al. "Bao: Making learned query optimization practical."](https://people.csail.mit.edu/hongzi/content/publications/BAO-Sigmod21.pdf)), with 40 queries. Additionally, we used the [TPCH benchmark](https://www.tpc.org/tpch/) with 22 queries and a scale factor of 10.
+
+</details>
+
+<details>
+  <summary><strong>Which hints were used?</strong></summary>
   
   The following list of hints was used, controlled by the corresponding global user configuration parameters (`GUC`s):
   
@@ -131,7 +130,7 @@ with open(f"src/hbo_bench/data/raw/dop{dop}/{benchmark_name}.json", "r") as f:
 </details>
 
 <details>
-  <summary>What is the configuration of used server?</summary>
+  <summary><strong>What is the configuration of used server?</strong></summary>
 
   All data were obtained on [OpenGauss DB](https://opengauss.org/en/aboutUs/) 
  on the server with the following settings:
