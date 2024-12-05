@@ -5,6 +5,8 @@
 - Implemented `torch`-like `Dataset` and `DataLoader` objects for efficient data handling.
 - Prototype (`query_explorer.py`) for experimenting with different query exploration strategies.
 
+> this repository is part of project [HERO: Hint-Based Efficient and Reliable Query Optimizer](https://github.com/zinchse/hero)
+
 # 💡 Concept
 
 Save all necessary data while developing a hint-based optimization approach, enabling a single look-up later instead of real execution. This dramatically reduces computation time during algorithm development.
@@ -171,3 +173,7 @@ There are two main papers on the hint-based query optimization approach and usef
 1. [Marcus, Ryan, et al. "Bao: Making learned query optimization practical." *Proceedings of the 2021 International Conference on Management of Data*, 2021, pp. 1275-1288.](https://people.csail.mit.edu/hongzi/content/publications/BAO-Sigmod21.pdf)
 
 2. [Anneser, Christoph, et al. "Autosteer: Learned query optimization for any SQL database." *Proceedings of the VLDB Endowment*, vol. 16, no. 12, 2023, pp. 3515-3527.](https://vldb.org/pvldb/vol16/p3515-anneser.pdf)
+
+🔥 **Our paper:**
+
+1. [Zinchenko S. and Iazov S. "HERO: Hint-Based Efficient and Reliable Query Optimizer.", 2024](https://arxiv.org/abs/2412.02372)
