@@ -174,6 +174,5 @@ There are two main papers on the hint-based query optimization approach and usef
 
 2. [Anneser, Christoph, et al. "Autosteer: Learned query optimization for any SQL database." *Proceedings of the VLDB Endowment*, vol. 16, no. 12, 2023, pp. 3515-3527.](https://vldb.org/pvldb/vol16/p3515-anneser.pdf)
 
-🔥 **Our paper:**
-
-1. [Zinchenko S. and Iazov S. "HERO: Hint-Based Efficient and Reliable Query Optimizer.", 2024](https://arxiv.org/abs/2412.02372)
+ and 🔥 **our paper:**
+- [Zinchenko S. and Iazov S. "HERO: Hint-Based Efficient and Reliable Query Optimizer.", 2024](https://arxiv.org/abs/2412.02372)
